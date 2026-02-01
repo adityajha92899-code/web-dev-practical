@@ -112,3 +112,33 @@ const countInterval = setInterval(() => {
 
 
 console.log("--- Async Tests End ---");
+
+function intervalDemoSimple() {
+    let count = 1;
+    const id = setInterval(() => {
+        console.log(count);
+        count += 10;
+
+        if (count > 10) {
+            clearInterval(id);
+        }
+    }, 1000);
+}
+
+function asyncIntervalDemo() {
+    let count = 10;
+    const id = setInterval(() => {
+        console.log("Interval Count:", count);
+        count += 10;
+
+        if (count > 30) {
+            clearInterval(id);
+            console.log("Interval Cleared");
+        }
+    }, 1000);
+}
+// asyncIntervalDemo(); // Uncomment to run the demo
+
+// ==============================
+// END OF SCRIPT
+// ==============================
