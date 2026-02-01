@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Playground</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="section">
+        <h2>1. Paragraphs (DOM Manipulation)</h2>
+        <p class="para">Paragraph 1</p>
+        <p class="para">Paragraph 2</p>
+        <p class="para">Paragraph 3</p>
+    </div>
+
+    <div class="section">
+        <h2>2. Events</h2>
+        <button class="btn">Click Me (Alert)</button>
+        
+        <br><br>
+        <label>Type here: <input type="text" class="input"></label>
+    </div>
+
+    <div class="section">
+        <h2>3. Form Submission</h2>
+        <form id="myForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Enter name"><br><br>
+            
+            <label for="password">Password:</label> 
+            <input type="password" id="password" placeholder="Enter password"><br><br>
+            
+            <button type="submit">Submit Form</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>4. Bubbling & Capturing</h2>
+        <div class="container">
+            <button class="one">Click to Test Propagation</button>
+        </div>
+        <p><em>(Check Console for output)</em></p>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
