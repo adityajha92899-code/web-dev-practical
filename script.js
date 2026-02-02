@@ -142,3 +142,164 @@ function asyncIntervalDemo() {
 // ==============================
 // END OF SCRIPT
 // ==============================
+
+// ...existing code...
+
+// ==============================
+// CALLBACK EXAMPLES 
+// ==============================
+
+// Example 1 — simple callback
+function printSimple() {
+    console.log("Hello from print function");
+}
+function greetSimple(cb) {
+    console.log("welcome to callback function (simple)");
+    cb();
+}
+greetSimple(printSimple); // runs immediately
+
+// Example 2 — callback with argument & async (setTimeout)
+function printName(name) {
+    console.log("Hello " + name);
+}
+function greetAsync(cb) {
+    console.log("welcome to callback function (async)");
+    setTimeout(() => {
+        console.log("Inside setTimeout");
+        cb("Alice"); // pass value to callback
+    }, 1000);
+    // local variable example (runs immediately)
+    let firstName = "John";
+    console.log("First name:", firstName);
+}
+greetAsync(printName); // runs after 1s
+
+// ...existing code...
+
+console.log("starting homework");
+setTimeout(() => {
+    console.log("finished homework");
+    console.log("starting playtime");
+    setTimeout(() => {
+        console.log("finished playtime");
+        console.log("starting dinner");
+        setTimeout(() => {
+            console.log("finished dinner");
+        }, 2000); // dinner after 2s
+    }, 2000); // playtime after 2s
+}, 2000); // homework after 2s
+
+function doHomework(subject, callback) {
+    console.log(`Starting my ${subject} homework.`);
+    setTimeout(() => {
+        console.log(`Finished my ${subject} homework.`);
+        callback();
+    }, 2000);
+}
+function eatdinner() {
+    console.log("Starting dinner."); 
+    setTimeout(() => {
+        console.log("Finished dinner.");
+        callback(); 
+    }, 2000);
+}
+
+function gotoplayground() {
+    console.log("Starting playtime.");
+}
+// Chained callbacks
+finishHomework("math", () => {
+    eatdinner(() => {
+        gotoplayground();
+    });
+});
+
+// ...existing code...
+
+
+// HANDLE CALLBACK HELl
+
+// 1) Fixed callback chaining (still nested but correct)
+function doHomework(subject, cb) {
+    console.log(`Starting my ${subject} homework.`);
+    setTimeout(() => {
+        console.log(`Finished my ${subject} homework.`);
+        if (cb) cb();
+    }, 2000);
+}
+
+function eatDinner(cb) {
+    console.log("Starting dinner.");
+    setTimeout(() => {
+        console.log("Finished dinner.");
+        if (cb) cb();
+    }, 2000);
+}
+
+function goToPlayground(cb) {
+    console.log("Starting playtime.");
+    setTimeout(() => {
+        console.log("Finished playtime.");
+        if (cb) cb && cb();
+    }, 2000);
+}
+
+// run (fixed)
+console.log("Run using callbacks:");
+doHomework("math", () => {
+    eatDinner(() => {
+        goToPlayground();
+    });
+});
+
+// 2) Promises (clean chaining, easier error handling)
+function doHomeworkP(subject) {
+    return new Promise(resolve => {
+        console.log(`Starting my ${subject} homework (promise).`);
+        setTimeout(() => {
+            console.log(`Finished my ${subject} homework (promise).`);
+            resolve();
+        }, 2000);
+    });
+}
+function eatDinnerP() {
+    return new Promise(resolve => {
+        console.log("Starting dinner (promise).");
+        setTimeout(() => {
+            console.log("Finished dinner (promise).");
+            resolve();
+        }, 2000);
+    });
+}
+function goToPlaygroundP() {
+    return new Promise(resolve => {
+        console.log("Starting playtime (promise).");
+        setTimeout(() => {
+            console.log("Finished playtime (promise).");
+            resolve();
+        }, 2000);
+    });
+}
+
+console.log("Run using Promises:");
+doHomeworkP("science")
+    .then(() => eatDinnerP())
+    .then(() => goToPlaygroundP())
+    .catch(err => console.error("Error in promise chain:", err));
+
+// 3) async / await (recommended — linear, readable)
+async function runDailyRoutine() {
+    try {
+        console.log("Run using async/await:");
+        await doHomeworkP("english");
+        await eatDinnerP();
+        await goToPlaygroundP();
+        console.log("All done (async/await)");
+    } catch (err) {
+        console.error("Routine failed:", err);
+    }
+}
+runDailyRoutine();
+
+
