@@ -1,305 +1,275 @@
-// ==============================
-// 1. PARAGRAPH SELECTION (DOM)
-// ==============================
-const paras = document.getElementsByClassName('para');
+// =======================
+// Lecture 3: querySelector
+// =======================
+const firstPara = document.querySelector(".info");
+firstPara.style.color = "blue";
 
-// Safety check: ensure elements exist
-if (paras.length > 0) {
-    paras[0].textContent = "THIS is now updated paragraph";
-    paras[1].style.color = "green";
-    console.log("Updated paragraphs:", paras);
+const allPara = document.querySelectorAll(".info");
+allPara.forEach(p => console.log(p.textContent));
+
+// =======================
+// NodeList vs HTMLCollection
+// =======================
+console.log("NodeList:", document.querySelectorAll(".info"));
+console.log("HTMLCollection:", document.getElementsByClassName("info"));
+
+// =======================
+// Lecture 5: addEventListener
+// =======================
+const btn = document.getElementById("btn");
+
+function buttonClickHandler(event) {
+  alert("Button was clicked!");
+  console.log("Event type:", event.type);
+  console.log("Target:", event.target);
 }
 
-// querySelectorAll (Returns NodeList - easier to loop)
-const para2 = document.querySelectorAll('.para');
-para2.forEach((ele, index) => {
-    console.log(`Para ${index} text:`, ele.textContent);
+btn.addEventListener("click", buttonClickHandler);
+
+// =======================
+// removeEventListener
+// =======================
+document.getElementById("stop").addEventListener("click", () => {
+  btn.removeEventListener("click", buttonClickHandler);
+  console.log("Click event removed");
 });
 
+// =======================
+// Lecture 6: Mouse Events
+// =======================
+const hoverBox = document.getElementById("hover-box");
 
-// ==============================
-// 2. BUTTON & INPUT EVENTS
-// ==============================
-const button = document.querySelector('.btn');
+hoverBox.addEventListener("mouseover", () => {
+  hoverBox.style.backgroundColor = "lightblue";
+});
 
-function message() {
-    alert("You have clicked the button");
+hoverBox.addEventListener("mouseout", () => {
+  hoverBox.style.backgroundColor = "white";
+});
+
+// =======================
+// Keyboard Events
+// =======================
+document.addEventListener("keydown", e => {
+  console.log("Key pressed:", e.key);
+});
+
+// =======================
+// Lecture 7: Bubbling vs Capturing
+// =======================
+document.body.addEventListener("click", () => {
+  console.log("Body clicked (Bubbling)");
+});
+
+document.body.addEventListener(
+  "click",
+  () => {
+    console.log("Body clicked (Capturing)");
+  },
+  true
+);
+
+// =======================
+// preventDefault()
+// =======================
+document.getElementById("myForm").addEventListener("submit", e => {
+  e.preventDefault();
+  alert("Form handled by JavaScript");
+});
+
+// =======================
+// Lecture 8: Call Stack
+// =======================
+function stackThird() {
+  console.log("Third function (top of stack)");
 }
 
-if (button) {
-    // Adding class dynamically (Lecture 4: ClassList)
-    button.classList.add('but'); 
-    button.addEventListener('click', message);
+function stackSecond() {
+  console.log("Second function");
+  stackThird();
 }
 
-// Keyup Event
-const input = document.querySelector('.input');
-if (input) {
-    input.addEventListener('keyup', (event) => {
-        console.log("Key pressed:", event.key);
-    });
+function stackFirst() {
+  console.log("First function");
+  stackSecond();
 }
 
+console.log("Call Stack Demo Start");
+stackFirst();
+console.log("Call Stack Demo End");
 
-// ==============================
-// 3. FORM SUBMISSION
-// ==============================
-const form = document.getElementById("myForm");
+// =======================
+// Temporal Dead Zone
+// =======================
+let x = 10;
+console.log("TDZ value:", x);
 
-if (form) {
-    form.addEventListener("submit", (e) => {
-        // PREVENT DEFAULT: Stops page reload (Lecture 7)
-        e.preventDefault(); 
-        console.log("Form submitted");
-        alert("Submit event triggered!");
-    });
-}
+// =======================
+// Lecture 9: Asynchronous JS
+// =======================
+console.log("Start");
 
-
-// ==============================
-// 4. EVENT BUBBLING & CAPTURING
-// ==============================
-// (Reference: Lecture 7 - Propagation)
-const btnOne = document.querySelector(".one");
-const divContainer = document.querySelector(".container");
-
-if (btnOne && divContainer) {
-    // --- CAPTURING PHASE (useCapture = true) ---
-    // Fires from Parent -> Child
-    divContainer.addEventListener("click", () => {
-        console.log("1. Div (Capturing phase)");
-    }, true);
-
-    btnOne.addEventListener("click", () => {
-        console.log("2. Button (Capturing phase)");
-    }, true);
-
-    // --- BUBBLING PHASE (useCapture = false/default) ---
-    // Fires from Child -> Parent
-    btnOne.addEventListener("click", () => {
-        console.log("3. Button (Bubbling phase)");
-    }, false);
-
-    divContainer.addEventListener("click", () => {
-        console.log("4. Div (Bubbling phase)");
-    }, false);
-}
-
-
-// ==============================
-// 5. ASYNC JS & EVENT LOOP
-// ==============================
-// (Reference: Lecture 10 & 14)
-
-console.log("--- Async Tests Start ---");
-
-// setTimeout
 setTimeout(() => {
-    console.log("Async: This runs after 2 seconds");
+  console.log("Async task completed");
 }, 2000);
 
-// setInterval (stops after count > 30)
-let count = 10;
-const countInterval = setInterval(() => {
-    console.log("Interval Count:", count);
-    count += 10;
+console.log("End");
 
-    if (count > 30) {
-        clearInterval(countInterval);
-        console.log("Interval Cleared");
-    }
+// =======================
+// Lecture 11: Callback
+// =======================
+function finishHomework(callback) {
+  console.log("Doing homework...");
+
+  setTimeout(() => {
+    console.log("Homework done!");
+    callback();
+  }, 2000);
+}
+
+function goToPlayground() {
+  console.log("Going to playground!");
+}
+
+finishHomework(goToPlayground);
+
+// =======================
+// Callback Hell
+// =======================
+setTimeout(() => {
+  console.log("Homework done");
+
+  setTimeout(() => {
+    console.log("Dinner done");
+
+    setTimeout(() => {
+      console.log("Playing outside");
+    }, 1000);
+
+  }, 1500);
+
+}, 2000);
+
+// =======================
+// Lecture 12: Promise (DECLARED ONCE)
+// =======================
+const homeworkPromise = new Promise((resolve, reject) => {
+  console.log("Promise started");
+
+  setTimeout(() => {
+    resolve("Homework submitted");
+  }, 3000);
+});
+
+console.log("Waiting for promise...");
+
+homeworkPromise
+  .then(msg => console.log("✅", msg))
+  .catch(err => console.log("❌", err));
+
+// =======================
+// Promise Chaining
+// =======================
+export function doHomework() {
+  return new Promise(res => {
+    setTimeout(() => {
+      console.log("Homework done");
+      res();
+    }, 2000);
+  });
+}
+
+export function eatDinner() {
+  return new Promise(res => {
+    setTimeout(() => {
+      console.log("Dinner done");
+      res();
+    }, 1500);
+  });
+}
+
+export function play() {
+  return new Promise(res => {
+    setTimeout(() => {
+      console.log("Playing");
+      res();
+    }, 1000);
+  });
+}
+
+// =======================
+// Async / Await
+// =======================
+async function runAsync() {
+  const result = await homeworkPromise;
+  console.log("Async/Await:", result);
+}
+
+runAsync();
+
+// =======================
+// Timers
+// =======================
+let count = 1;
+
+const interval = setInterval(() => {
+  console.log("Count:", count++);
+  if (count > 5) {
+    clearInterval(interval);
+  }
 }, 1000);
 
-
-console.log("--- Async Tests End ---");
-
-function intervalDemoSimple() {
-    let count = 1;
-    const id = setInterval(() => {
-        console.log(count);
-        count += 10;
-
-        if (count > 10) {
-            clearInterval(id);
-        }
-    }, 1000);
-}
-
-function asyncIntervalDemo() {
-    let count = 10;
-    const id = setInterval(() => {
-        console.log("Interval Count:", count);
-        count += 10;
-
-        if (count > 30) {
-            clearInterval(id);
-            console.log("Interval Cleared");
-        }
-    }, 1000);
-}
-// asyncIntervalDemo(); // Uncomment to run the demo
-
-// ==============================
-// END OF SCRIPT
-// ==============================
-
-// ...existing code...
-
-// ==============================
-// CALLBACK EXAMPLES 
-// ==============================
-
-// Example 1 — simple callback
-function printSimple() {
-    console.log("Hello from print function");
-}
-function greetSimple(cb) {
-    console.log("welcome to callback function (simple)");
-    cb();
-}
-greetSimple(printSimple); // runs immediately
-
-// Example 2 — callback with argument & async (setTimeout)
-function printName(name) {
-    console.log("Hello " + name);
-}
-function greetAsync(cb) {
-    console.log("welcome to callback function (async)");
-    setTimeout(() => {
-        console.log("Inside setTimeout");
-        cb("Alice"); // pass value to callback
-    }, 1000);
-    // local variable example (runs immediately)
-    let firstName = "John";
-    console.log("First name:", firstName);
-}
-greetAsync(printName); // runs after 1s
-
-// ...existing code...
-
-console.log("starting homework");
+console.log("start")
 setTimeout(() => {
-    console.log("finished homework");
-    console.log("starting playtime");
-    setTimeout(() => {
-        console.log("finished playtime");
-        console.log("starting dinner");
-        setTimeout(() => {
-            console.log("finished dinner");
-        }, 2000); // dinner after 2s
-    }, 2000); // playtime after 2s
-}, 2000); // homework after 2s
+  console.log("inside timeout");
+}, 2000);
 
-function doHomework(subject, callback) {
-    console.log(`Starting my ${subject} homework.`);
-    setTimeout(() => {
-        console.log(`Finished my ${subject} homework.`);
-        callback();
-    }, 2000);
-}
-function eatdinner() {
-    console.log("Starting dinner."); 
-    setTimeout(() => {
-        console.log("Finished dinner.");
-        callback(); 
-    }, 2000);
-}
+console.log("end");
 
-function gotoplayground() {
-    console.log("Starting playtime.");
-}
-// Chained callbacks
-finishHomework("math", () => {
-    eatdinner(() => {
-        gotoplayground();
-    });
+console.log("Start");
+
+Promise.resolve().then(() => {
+  console.log("Promise 1");
 });
 
-// ...existing code...
-
-
-// HANDLE CALLBACK HELl
-
-// 1) Fixed callback chaining (still nested but correct)
-function doHomework(subject, cb) {
-    console.log(`Starting my ${subject} homework.`);
-    setTimeout(() => {
-        console.log(`Finished my ${subject} homework.`);
-        if (cb) cb();
-    }, 2000);
-}
-
-function eatDinner(cb) {
-    console.log("Starting dinner.");
-    setTimeout(() => {
-        console.log("Finished dinner.");
-        if (cb) cb();
-    }, 2000);
-}
-
-function goToPlayground(cb) {
-    console.log("Starting playtime.");
-    setTimeout(() => {
-        console.log("Finished playtime.");
-        if (cb) cb && cb();
-    }, 2000);
-}
-
-// run (fixed)
-console.log("Run using callbacks:");
-doHomework("math", () => {
-    eatDinner(() => {
-        goToPlayground();
-    });
+Promise.resolve().then(() => {
+  console.log("Promise 2");
 });
 
-// 2) Promises (clean chaining, easier error handling)
-function doHomeworkP(subject) {
-    return new Promise(resolve => {
-        console.log(`Starting my ${subject} homework (promise).`);
-        setTimeout(() => {
-            console.log(`Finished my ${subject} homework (promise).`);
-            resolve();
-        }, 2000);
-    });
-}
-function eatDinnerP() {
-    return new Promise(resolve => {
-        console.log("Starting dinner (promise).");
-        setTimeout(() => {
-            console.log("Finished dinner (promise).");
-            resolve();
-        }, 2000);
-    });
-}
-function goToPlaygroundP() {
-    return new Promise(resolve => {
-        console.log("Starting playtime (promise).");
-        setTimeout(() => {
-            console.log("Finished playtime (promise).");
-            resolve();
-        }, 2000);
-    });
-}
+Promise.resolve().then(() => {
+  console.log("Promise 3");
+});
 
-console.log("Run using Promises:");
-doHomeworkP("science")
-    .then(() => eatDinnerP())
-    .then(() => goToPlaygroundP())
-    .catch(err => console.error("Error in promise chain:", err));
+console.log("End");
 
-// 3) async / await (recommended — linear, readable)
-async function runDailyRoutine() {
-    try {
-        console.log("Run using async/await:");
-        await doHomeworkP("english");
-        await eatDinnerP();
-        await goToPlaygroundP();
-        console.log("All done (async/await)");
-    } catch (err) {
-        console.error("Routine failed:", err);
-    }
-}
-runDailyRoutine();
+const form = document.getElementById("eventForm");
+const output = document.getElementById("output");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault(); // VERY IMPORTANT
+
+  const date = document.getElementById("eventDate").value;
+  const category = document.getElementById("category").value;
+
+  output.textContent = `Event Scheduled on ${date} (${category})`;
+
+  // async feedback
+  setTimeout(() => {
+    output.textContent += " | Reminder Set!";
+  }, 2000);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

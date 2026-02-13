@@ -1,12 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Web Dev Practical – JS Events & Async</title>
-    <link rel="stylesheet" href="./css/style.css"> <!-- changed path -->
+  
+  <meta charset="UTF-8" />
+  <title>Web Development II – All Working Codes</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-...
-    <script src="./script.js"></script> <!-- changed path -->
+
+  <h1 id="title">Web Development – II</h1>
+
+  <!-- Query Selector -->
+  <p class="info">First paragraph</p>
+  <p class="info">Second paragraph</p>
+
+  <!-- Buttons -->
+  <button id="btn">Click Me</button>
+  <button id="stop">Stop</button>
+
+  <!-- Hover Box -->
+  <div id="hover-box">Hover on me</div>
+
+  <!-- Form -->
+  <form id="myForm">
+    <input type="text" placeholder="Type something" />
+    <button type="submit">Submit</button>
+  </form>
+
+  <script src="script.js"></script>
 </body>
+
+<form id="eventForm">
+  <label for="eventDate">Event Date</label>
+  <input type="date" id="eventDate">
+
+  <label for="category">Category</label>
+  <select id="category">
+    <option value="Conference">Conference</option>
+    <option value="Workshop">Workshop</option>
+    <option value="Meetup">Meetup</option>
+    <option value="Webinar">Webinar</option>
+    <option value="Social">Social</option>
+  </select>
+
+  <button type="submit">Add Event</button>
+</form>
+
+<p id="output"></p>
+
 </html>
