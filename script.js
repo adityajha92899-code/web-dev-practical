@@ -246,7 +246,7 @@ const form = document.getElementById("eventForm");
 const output = document.getElementById("output");
 
 form.addEventListener("submit", function (e) {
-  e.preventDefault(); // VERY IMPORTANT
+  e.preventDefault(); 
 
   const date = document.getElementById("eventDate").value;
   const category = document.getElementById("category").value;
@@ -256,11 +256,77 @@ form.addEventListener("submit", function (e) {
   // async feedback
   setTimeout(() => {
     output.textContent += " | Reminder Set!";
+    
   }, 2000);
 });
+function orderfood(){
+  return new Promise(function(resolve,reject){
+    setTimeout(()=>{
+      console.log("food ordered")
+      resolve("food ordered")  
+    },1000)
+  })
+}
+
+function orderfood(){
+  return new Promise(function(resolve,reject){
+    setTimeout(() => {
+      console.log("food delivered ")
+      resolve("food deliver")
+    },1000)
+    
+  })
+}
+  orderfoof().then((data))=>{
+    console.log(data)
+    return preparedfood()
+  }then((data)){
+    console.log(data)
+  } 
+    
+  async function order(){
+    const data=await orderfood()
+    console.log(data)
+    await preparedfood()
+    await deliverfood()
+    
+  }
+
+  order()
+
+  console.log("first line")
+  try{
+    //let sample=324
+    console.log(sample)
+  }catch(error){
+    console.log(error)
+  }finally{
+    console.log("finally block")
+  
+  }
+  console.log("last line")
+
+  console.log("first line")
+  try{
+      let age =( 19
+      if(age<18))
+        
+  }
 
 
-
+async function fetchData(){} 
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+    console.log("Response received");
+    if(response.ok===false)throw new Error("Network response was not ok");
+    const data = await response.json();
+    console.log("Data parsed:", data);
+    // data.products.for each((else) => {
+      //   console.log(else);
+      // });
+  } catch (error) {
+    console.error("data not found",);
+  }
 
 
 
