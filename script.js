@@ -61,13 +61,9 @@ document.body.addEventListener("click", () => {
   console.log("Body clicked (Bubbling)");
 });
 
-document.body.addEventListener(
-  "click",
-  () => {
-    console.log("Body clicked (Capturing)");
-  },
-  true
-);
+document.body.addEventListener("click", () => {
+  console.log("Body clicked (Capturing)");
+}, true);
 
 // =======================
 // preventDefault()
@@ -138,24 +134,19 @@ finishHomework(goToPlayground);
 // =======================
 setTimeout(() => {
   console.log("Homework done");
-
   setTimeout(() => {
     console.log("Dinner done");
-
     setTimeout(() => {
       console.log("Playing outside");
     }, 1000);
-
   }, 1500);
-
 }, 2000);
 
 // =======================
-// Lecture 12: Promise (DECLARED ONCE)
+// Lecture 12: Promise
 // =======================
 const homeworkPromise = new Promise((resolve, reject) => {
   console.log("Promise started");
-
   setTimeout(() => {
     resolve("Homework submitted");
   }, 3000);
@@ -168,7 +159,7 @@ homeworkPromise
   .catch(err => console.log("❌", err));
 
 // =======================
-// Promise Chaining
+// Promise Chaining (Fixed)
 // =======================
 export function doHomework() {
   return new Promise(res => {
@@ -204,14 +195,12 @@ async function runAsync() {
   const result = await homeworkPromise;
   console.log("Async/Await:", result);
 }
-
 runAsync();
 
 // =======================
-// Timers
+// Timers & Microtask Queue
 // =======================
 let count = 1;
-
 const interval = setInterval(() => {
   console.log("Count:", count++);
   if (count > 5) {
@@ -219,123 +208,131 @@ const interval = setInterval(() => {
   }
 }, 1000);
 
-console.log("start")
+console.log("start");
 setTimeout(() => {
   console.log("inside timeout");
 }, 2000);
-
 console.log("end");
 
-console.log("Start");
+console.log("Start Promises");
+Promise.resolve().then(() => console.log("Promise 1"));
+Promise.resolve().then(() => console.log("Promise 2"));
+Promise.resolve().then(() => console.log("Promise 3"));
+console.log("End Promises");
 
-Promise.resolve().then(() => {
-  console.log("Promise 1");
-});
-
-Promise.resolve().then(() => {
-  console.log("Promise 2");
-});
-
-Promise.resolve().then(() => {
-  console.log("Promise 3");
-});
-
-console.log("End");
-
+// =======================
+// Event Form Logic
+// =======================
 const form = document.getElementById("eventForm");
 const output = document.getElementById("output");
 
 form.addEventListener("submit", function (e) {
   e.preventDefault(); 
-
   const date = document.getElementById("eventDate").value;
   const category = document.getElementById("category").value;
 
   output.textContent = `Event Scheduled on ${date} (${category})`;
 
-  // async feedback
   setTimeout(() => {
     output.textContent += " | Reminder Set!";
-    
   }, 2000);
 });
-function orderfood(){
-  return new Promise(function(resolve,reject){
-    setTimeout(()=>{
-      console.log("food ordered")
-      resolve("food ordered")  
-    },1000)
-  })
-}
 
-function orderfood(){
-  return new Promise(function(resolve,reject){
+// =======================
+// Food Order Promises (Fixed syntax and logic)
+// =======================
+function orderFood() {
+  return new Promise(function(resolve, reject) {
     setTimeout(() => {
-      console.log("food delivered ")
-      resolve("food deliver")
-    },1000)
-    
-  })
+      console.log("Food ordered");
+      resolve("Food ordered payload");  
+    }, 1000);
+  });
 }
-  orderfoof().then((data))=>{
-    console.log(data)
-    return preparedfood()
-  }then((data)){
-    console.log(data)
-  } 
-    
-  async function order(){
-    const data=await orderfood()
-    console.log(data)
-    await preparedfood()
-    await deliverfood()
-    
+
+function prepareFood() {
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => {
+      console.log("Food prepared");
+      resolve("Food prepared payload");
+    }, 1000);
+  });
+}
+
+function deliverFood() {
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => {
+      console.log("Food delivered");
+      resolve("Food delivered payload");
+    }, 1000);
+  });
+}
+
+// Using Promise `.then()`
+orderFood()
+  .then(data => {
+    console.log(data);
+    return prepareFood();
+  })
+  .then(data => {
+    console.log(data);
+    return deliverFood();
+  })
+  .then(data => {
+    console.log(data);
+  });
+
+// Using Async/Await
+async function processOrder() {
+  const orderedData = await orderFood();
+  console.log(orderedData);
+  const preparedData = await prepareFood();
+  console.log(preparedData);
+  const deliveredData = await deliverFood();
+  console.log(deliveredData);
+}
+processOrder();
+
+// =======================
+// Try / Catch Blocks (Fixed logic)
+// =======================
+console.log("First line (try/catch test 1)");
+try {
+  // Let's intentionally cause an error to test the catch block
+  let sample = 324;
+  console.log(undefinedVariable); // This will throw an error
+} catch (error) {
+  console.log("Caught an error:", error.message);
+} finally {
+  console.log("Finally block executed");
+}
+console.log("Last line");
+
+console.log("First line (try/catch test 2)");
+try {
+  let age = 19;
+  if (age < 18) {
+    throw new Error("Age is under 18!");
   }
+  console.log("Age check passed");
+} catch(error) {
+  console.log("Error:", error.message);
+}
 
-  order()
-
-  console.log("first line")
-  try{
-    //let sample=324
-    console.log(sample)
-  }catch(error){
-    console.log(error)
-  }finally{
-    console.log("finally block")
-  
-  }
-  console.log("last line")
-
-  console.log("first line")
-  try{
-      let age =( 19
-      if(age<18))
-        
-  }
-
-
-async function fetchData(){} 
-  try {
+// =======================
+// Fetch API
+// =======================
+async function fetchData() {
+  try { 
     const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
     console.log("Response received");
-    if(response.ok===false)throw new Error("Network response was not ok");
+    if (!response.ok) {
+        throw new Error("Network response was not ok");
+    }
     const data = await response.json();
     console.log("Data parsed:", data);
-    // data.products.for each((else) => {
-      //   console.log(else);
-      // });
   } catch (error) {
-    console.error("data not found",);
-  }
-
-
-
-
-
-
-
-
-
-
-
-
+    console.error("Data not found:", error);
+  }   
+}
+fetchData();
